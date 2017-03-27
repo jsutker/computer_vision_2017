@@ -8,5 +8,5 @@ def placeImage (image,pts2):
 	length = len(image)
 	pts1 = [[0,0],[0,width],[length,width],[length,0]]
 	M = cv2.getPerspectiveTransform(pts1,pts2)  #find homography instead?
-    dst = cv2.warpPerspective(image,M,(length,width))
-    return dst
+	dst = cv2.warpPerspective(image,M,(length,width))
+	return dst
