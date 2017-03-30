@@ -23,4 +23,4 @@ def coordinate_translator(world_coords, odom_coords, focal_point, principal_poin
   u = (fx*(x/z))+cx
   v = (fy*(y/z))+cy
 
-  return (u, v)
+  return [u, v]
