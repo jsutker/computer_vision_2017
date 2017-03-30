@@ -2,11 +2,12 @@ import numpy as np
 from tf.transformations import rotation_matrix
 def coordinate_translator(world_coords, odom_coords, focal_point, principal_point):
   w_z, w_x, w_y = world_coords
-  o_x, o_y, o_theta = odom_coords
+  o_z, o_x, o_theta = odom_coords
+  o_y = 0
   fx, fy = focal_point
   cx, cy = principal_point
 
-  t = (w_x-o_x, w_y-o_y, w_z)
+  t = (w_x-o_x, w_y-o_y, w_z-o_z)
 
   r = rotation_matrix(o_theta, (0,0,1))
 
