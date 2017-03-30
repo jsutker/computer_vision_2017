@@ -35,19 +35,10 @@ class Pacneato(object):
                         (pt[1] <= 480) and
                         (pt[1] >= 0)) for pt in pts2]:
         c_img_corners = []
-        top = 480   # Set default values to opposite side of screen
-        bottom = 0
-        left = 620
-        right = 0
-        for pt in pts2:
-          if pt[0] < left:
-            left = pt[0]
-          elif pt[0] > right:
-            right = pt[0]
-          elif pt[1] < top:
-            top = pt[1]
-          elif pt[1] > bottom:
-            bottom = pt[1]
+        top = min([pt[1] for pt in pts2])
+        bottom = max([pt[1] for pt in pts2])
+        left = min([pt[0] for pt in pts2])
+        right = max([pt[0] for pt in pts2])
         c_img = placeImage(self.coin_img, pts2)
         # overlay on self.cv_image using top/bottom/left/right coords for bounding box
 
