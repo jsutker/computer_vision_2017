@@ -13,6 +13,7 @@ class Pacneato(object):
     """ Initialize the video/game """
     rospy.init_node('pacneato')
     self.cv_image = None
+    self.bridge = CvBridge()
     self.coins = [[2,1,0],[2,-1,0]]
 
     cv2.namedWindow('video_window')
@@ -22,16 +23,33 @@ class Pacneato(object):
   def process_image(self, msg):
     """ Process image messages from ROS and stash them in an attribute
         called cv_image for subsequent processing """
-    coin_imgs = []
+    self.cv_image = self.bridge.imgmsg_to_cv2(msg, desired_encoding="bgra8")
     for c in coins:
       corners = [[c[0],c[1]+.1,c[2]+.1],
                  [c[0],c[1]-.1,c[2]+.1],
                  [c[0],c[1]-.1,c[2]-.1],
                  [c[0],c[1]+.1,c[2]-.1]]
       pts2 = [coordinate_translator(pt) for pt in corners]
-      c_img = placeImage(self.coin_img, pts2)
-      coin_imgs.append([c_img,corners])
-    ### DO OVERLAYING CODE HERE AND SAVE TO self.cv_image!!!!!
+      if False not in [((pt[0] <= 620) and 
+                        (pt[0] >= 0) and
+                        (pt[1] <= 480) and
+                        (pt[1] >= 0)) for pt in pts2]:
+        c_img_corners = []
+        top = 480   # Set default values to opposite side of screen
+        bottom = 0
+        left = 620
+        right = 0
+        for pt in pts2:
+          if pt[0] < left:
+            left = pt[0]
+          elif pt[0] > right:
+            right = pt[0]
+          elif pt[1] < top:
+            top = pt[1]
+          elif pt[1] > bottom:
+            bottom = pt[1]
+        c_img = placeImage(self.coin_img, pts2)
+        # overlay on self.cv_image using top/bottom/left/right coords for bounding box
 
   def run(self):
     """ The main run loop"""
