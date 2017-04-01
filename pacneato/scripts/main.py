@@ -6,7 +6,7 @@ from cv_bridge import CvBridge
 import cv2
 import numpy as np
 from coordinate_translator import coordinate_translator
-from placeImage import placeImage
+from place_image import place_image
 
 class Pacneato(object):
   def __init__(self):
@@ -39,7 +39,7 @@ class Pacneato(object):
         bottom = max([pt[1] for pt in pts2])
         left = min([pt[0] for pt in pts2])
         right = max([pt[0] for pt in pts2])
-        c_img = placeImage(self.coin_img, pts2)
+        c_img = place_image(self.coin_img, pts2)
         for c in range(0,3):
           to_repl = (c_img[:,:,3]/255.0)
           repl = c_img[:,:,c] * to_repl
@@ -47,7 +47,7 @@ class Pacneato(object):
           self.cv_image[top:bottom, left:right, c] = repl + orig
 
   def run(self):
-    """ The main run loop"""
+    """ The main run loop """
     r = rospy.Rate(10)
     while not rospy.is_shutdown():
       if not self.cv_image is None:
