@@ -1,6 +1,6 @@
 import cv2
 import numpy as np
-def placeImage (image,pts2):	
+def place_image(image,pts2):	
 	"""Takes an image as input as well as the desired perspective of the image.
 	Returns the transformed version of the image."""
 	image = cv2.imread(img,-1)
@@ -9,9 +9,9 @@ def placeImage (image,pts2):
 	pts1 = [[0,0],[0,width],[length,width],[length,0]]
 	M = cv2.getPerspectiveTransform(pts1,pts2)  #find homography instead?
 	dst = cv2.warpPerspective(image,M,(length,width))
-	return cropImage(dst)
+	return crop_image(dst)
 
-def cropImage(image):
+def crop_image(image):
 	for i in image:
 		for x in i:
 			if x[0] == 0 and x[1] == 0 and x[2] == 0:
@@ -21,4 +21,4 @@ def cropImage(image):
 
 if __name__ == '__main__':
 	image = "./test.png"
-	cropImage(image)
+	crop_image(image)

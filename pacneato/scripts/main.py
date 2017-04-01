@@ -40,7 +40,11 @@ class Pacneato(object):
         left = min([pt[0] for pt in pts2])
         right = max([pt[0] for pt in pts2])
         c_img = placeImage(self.coin_img, pts2)
-        # overlay on self.cv_image using top/bottom/left/right coords for bounding box
+        for c in range(0,3):
+          to_repl = (c_img[:,:,3]/255.0)
+          repl = c_img[:,:,c] * to_repl
+          orig = self.cv_image[top:bottom, left:right, c] * (1.0 - to_repl)
+          self.cv_image[top:bottom, left:right, c] = repl + orig
 
   def run(self):
     """ The main run loop"""
