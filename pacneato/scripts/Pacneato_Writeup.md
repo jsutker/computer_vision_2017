@@ -4,7 +4,7 @@ By Gabriel Butterick and Joseph Sutker
 ## Goal
 The goal of our project was to allow a robot to visualize coins overlayed on its video feed in a way that accounted for changes in perspective. We wanted to then use that visualization to allow the driver of the robot to play a game collecting the various coins.
 
-<video width="640" height="480" controls="controls">
+<video width="636" height="476" controls="controls">
   <source src="demo.mp4" type="video/mp4">
 </video>
 
