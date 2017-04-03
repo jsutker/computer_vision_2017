@@ -17,6 +17,7 @@ def place_image(img,pts2):
 	return crop_image(dst)
 
 def crop_image(image):
+	""" A helper function that replaces black in the image with transparency """
 	for i in image:
 		for x in i:
 			if x[0] == 0 and x[1] == 0 and x[2] == 0:

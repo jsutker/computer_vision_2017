@@ -1,6 +1,9 @@
 import numpy as np
 from tf.transformations import rotation_matrix
+
 def coordinate_translator(world_coords, odom_coords, focal_point, principal_point):
+  """ Takes in the coordinates of the point in the world and translates it to a 
+      point on the image using odometry and lens data """
   w_z, w_y, w_x = world_coords
   w_y *= -1
   o_z, o_y, o_theta = odom_coords
@@ -24,4 +27,4 @@ def coordinate_translator(world_coords, odom_coords, focal_point, principal_poin
   u = (fx*(x/z))+cx
   v = (fy*(y/z))+cy
 
-  return [480-v, u]
+  return [480-v, 620-u]
