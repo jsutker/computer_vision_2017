@@ -19,7 +19,7 @@ class Pacneato(object):
     self.cv_image = None
     self.c_img = None
     self.bridge = CvBridge()
-    self.coins = [[2,1,-.3],[2,-1,-.3]]
+    self.coins = [[2,1,.3],[2,-1,.3]]
     self.odom_pose = (0,0,0)
     self.focal = (626.813695,623.324624)     # Taken from calibration data
     self.principal = (326.583796,242.688526) # Taken from calibration data
@@ -32,7 +32,7 @@ class Pacneato(object):
   def process_img(self, msg):
     """ Process image messages from ROS and stash them in an attribute called
         cv_image for subsequent processing """
-    self.cv_image = self.bridge.imgmsg_to_cv2(msg, desired_encoding="bgra8")
+    tmp_image = self.bridge.imgmsg_to_cv2(msg, desired_encoding="bgra8")
     for c in self.coins:
       corners = [[c[0],c[1]+.1,c[2]+.1],
                  [c[0],c[1]-.1,c[2]+.1],
@@ -43,7 +43,7 @@ class Pacneato(object):
                                              self.focal,
                                              self.principal) for pt in corners],
                       np.float32)
-      if False not in [((pt[0] <= 620) and 
+      if False not in [((pt[0] <= 640) and 
                         (pt[0] >= 0) and
                         (pt[1] <= 480) and
                         (pt[1] >= 0)) for pt in pts2]:
@@ -57,8 +57,9 @@ class Pacneato(object):
         for c in range(0,3):
           to_repl = (self.c_img[:,:,3]/255.0)
           repl = self.c_img[:,:,c] * to_repl
-          orig = self.cv_image[top:top+len(self.c_img), left:left+len(self.c_img[0]), c] * (1.0 - to_repl)
-          self.cv_image[top:top+len(self.c_img), left:left+len(self.c_img[0]), c] = repl + orig
+          orig = tmp_image[top:top+len(self.c_img), left:left+len(self.c_img[0]), c] * (1.0 - to_repl)
+          tmp_image[top:top+len(self.c_img), left:left+len(self.c_img[0]), c] = repl + orig
+    self.cv_image = tmp_image
 
   def process_odom(self, msg):
     """ Process odom messages from ROS and stash them in an attribute called
